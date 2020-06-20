@@ -1,0 +1,44 @@
+[
+  {
+    "customer_name": "Stewie Griffin",
+    "account_number": "1234",
+    "customer_id": "777",
+    "account_balance": 100,
+    "account_type": "checking"
+  },
+  {
+    "customer_name": "Glenn Quagmire",
+    "account_number": "504",
+    "customer_id": "2001",
+    "account_balance": 35000.0,
+    "account_type": "checking"
+  },
+  {
+    "customer_name": "Joe Swanson",
+    "account_number": "002",
+    "customer_id": "1010",
+    "account_balance": 7425.0,
+    "account_type": "checking"
+  },
+  {
+    "customer_name": "Joe Swanson",
+    "account_number": "5500",
+    "customer_id": "1010",
+    "account_balance": 15000.0,
+    "account_type": "checking"
+  },
+  {
+    "customer_name": "Peter Griffin",
+    "account_number": "0123",
+    "customer_id": "123",
+    "account_balance": 150.0,
+    "account_type": "checking"
+  },
+  {
+    "customer_name": "Lois Griffin",
+    "account_number": "0456",
+    "customer_id": "456",
+    "account_balance": 65000.0,
+    "account_type": "checking"
+  }
+]
