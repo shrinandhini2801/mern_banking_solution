@@ -1,3 +1,7 @@
+/**
+ * @author Shri Nandhini J R
+ * @email shrinandhini2801@gmail.com
+ */
 import {
   AppBar,
   Button,
@@ -11,12 +15,11 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import axios from "axios";
 import React, { Component } from "react";
-import apiConfig from "../apiConfig.json";
 import DepositForm from "./DepositForm";
-import TransferForm from "./TransferForm";
+import { onLogin } from "./Functions";
 import ShowCustomerDetails from "./ShowCustomersDetails";
+import TransferForm from "./TransferForm";
 import WithdrawForm from "./WithdrawForm";
 
 const initialState = {
@@ -25,7 +28,13 @@ const initialState = {
   showTransfer: false,
   transactionSuccess: false,
 };
-
+/**
+ *
+ * Main Home page that includes all necessary components
+ * @export
+ * @class HomePage
+ * @extends {Component}
+ */
 export default class HomePage extends Component {
   constructor() {
     super();
@@ -46,23 +55,13 @@ export default class HomePage extends Component {
   onLoginClick = (e) => {
     e.preventDefault();
     const { loggedInUsercustomerId } = this.state;
-    loggedInUsercustomerId &&
-      axios
-        .get(apiConfig.ENDPOINT + "/" + loggedInUsercustomerId)
-        .then((res) => {
-          console.log("res", res);
-          if (res) {
-            this.setState({
-              loggedInUseraccountData: res.data,
-              loggedIn: true,
-            });
-          } else {
-            alert("Enter valid Details! ");
-          }
-        })
-        .catch((err) => {
-          console.log("Error while fetching data");
-        });
+    const onSuccess = (res) => {
+      this.setState({
+        loggedInUseraccountData: res.data,
+        loggedIn: true,
+      });
+    };
+    loggedInUsercustomerId && onLogin(loggedInUsercustomerId, onSuccess);
   };
 
   loginForm = () => {
@@ -174,18 +173,21 @@ export default class HomePage extends Component {
           {loggedIn && (
             <>
               <Button
+                id={"depositButton"}
                 {...buttonProps}
                 onClick={() => this.showOrHideForms("showDeposit")}
               >
                 {"Deposit"}
               </Button>
               <Button
+                id={"withdrawButton"}
                 {...buttonProps}
                 onClick={() => this.showOrHideForms("showWithdraw")}
               >
                 {"Withdraw"}
               </Button>
               <Button
+                id={"transferButton"}
                 {...buttonProps}
                 onClick={() => this.showOrHideForms("showTransfer")}
               >

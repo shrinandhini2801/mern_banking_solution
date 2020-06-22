@@ -1,23 +1,21 @@
+/**
+ * @author Shri Nandhini J R
+ * @email shrinandhini2801@gmail.com
+ */
 import {
+  Button,
   FormControl,
   InputLabel,
-  Select,
-  MenuItem,
   makeStyles,
+  MenuItem,
   Paper,
-  Typography,
+  Select,
   TextField,
-  Button,
+  Typography,
 } from "@material-ui/core";
-import axios from "axios";
 import React, { useState } from "react";
-import {
-  convertionTypes,
-  currencyConvert,
-  currencyTypes,
-} from "./utils/CurrencyConversion";
-import apiConfig from "../apiConfig.json";
-import Customers from "../Customers.json";
+import { onDeposit } from "./Functions";
+import { currencyTypes } from "./utils/CurrencyConversion";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -30,13 +28,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 /**
  *
- *
+ * Deposit form component
  * @export
  * @param {*} props - userAcounts ( array of accounts stored per user)
  * @returns
  */
 export default function DepositForm(props) {
-  console.log("props", props);
   const classes = useStyles();
   const [fromAccount, setfromAccount] = useState(null);
   const [toAccount, setToAccount] = useState(null);
@@ -51,36 +48,7 @@ export default function DepositForm(props) {
    * @param {*} currency
    */
   const onDepositClick = (toAccount, amount, currency) => {
-    /** Adding deposit amount to available balance */
-    let CADAmount = amount;
-    /** Convert currency to CAD before depositing */
-    if (currency !== currencyTypes.CAD) {
-      CADAmount = currencyConvert(
-        currency === currencyTypes.MXN
-          ? convertionTypes.MXNtoCAD
-          : currency === currencyTypes.USD
-          ? convertionTypes.USDtoCAD
-          : null,
-        CADAmount
-      );
-    }
-
-    axios
-      .post(apiConfig.ENDPOINT + "/update/" + toAccount, {
-        account_balance: CADAmount,
-      })
-      .then((res) => {
-        console.log("res", res);
-        if (res && res.status === 200) {
-          alert("Deposited");
-          props.onSuccess();
-        } else {
-          alert("Enter valid Details! ");
-        }
-      })
-      .catch((err) => {
-        console.log("Error while fetching data");
-      });
+    onDeposit(toAccount, amount, currency, props.onSuccess);
   };
 
   return (

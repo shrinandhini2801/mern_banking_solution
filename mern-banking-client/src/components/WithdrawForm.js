@@ -1,23 +1,21 @@
+/**
+ * @author Shri Nandhini J R
+ * @email shrinandhini2801@gmail.com
+ */
 import {
+  Button,
   FormControl,
   InputLabel,
-  Select,
-  MenuItem,
   makeStyles,
+  MenuItem,
   Paper,
-  Typography,
+  Select,
   TextField,
-  Button,
+  Typography,
 } from "@material-ui/core";
-import axios from "axios";
 import React, { useState } from "react";
-import {
-  convertionTypes,
-  currencyConvert,
-  currencyTypes,
-} from "./utils/CurrencyConversion";
-import apiConfig from "../apiConfig.json";
-import Customers from "../Customers.json";
+import { onWithdraw } from "./Functions";
+import { currencyTypes } from "./utils/CurrencyConversion";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -31,13 +29,12 @@ const useStyles = makeStyles((theme) => ({
 
 /**
  *
- *
+ * Withdrawal form component
  * @export
  * @param {*} props
  * @returns
  */
 export default function WithdrawForm(props) {
-  console.log("props", props);
   const classes = useStyles();
   const [fromAccount, setfromAccount] = useState(null);
   const [toAccount, setToAccount] = useState(null);
@@ -51,52 +48,7 @@ export default function WithdrawForm(props) {
    * @param {*} currency
    */
   const onWithdrawClick = (fromAccount, amount, currency) => {
-    let CADAmount = amount;
-    /** Convert currency to CAD before depositing */
-    if (currency !== currencyTypes.CAD) {
-      CADAmount = currencyConvert(
-        currency === currencyTypes.MXN
-          ? convertionTypes.MXNtoCAD
-          : currency === currencyTypes.USD
-          ? convertionTypes.USDtoCAD
-          : null,
-        CADAmount
-      );
-    }
-    /**Api to update db */
-    axios
-      .get(apiConfig.ENDPOINT + "/account/" + fromAccount)
-      .then((res) => {
-        if (res && res.status === 200) {
-          let avaialableBalance = res.data[0].account_balance.$numberDecimal;
-          if (
-            avaialableBalance &&
-            Number(avaialableBalance) < Number(CADAmount)
-          ) {
-            alert("No sufficient Balance to do this Winthdrawal!");
-          } else {
-            axios
-              .post(apiConfig.ENDPOINT + "/update/" + fromAccount, {
-                account_balance: -Number(CADAmount),
-              })
-              .then((res) => {
-                console.log("res", res);
-                if (res && res.status === 200) {
-                  alert("Withdrawal Successful!");
-                  props.onSuccess();
-                } else {
-                  alert("Enter valid Details! ");
-                }
-              })
-              .catch((err) => {
-                console.log("Error while fetching data");
-              });
-          }
-        }
-      })
-      .catch((err) => {
-        console.log("Err", err);
-      });
+    onWithdraw(fromAccount, amount, currency, props.onSuccess);
   };
 
   return (

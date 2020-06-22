@@ -1,3 +1,7 @@
+/**
+ * @author Shri Nandhini J R
+ * @email shrinandhini2801@gmail.com
+ */
 export const convertionTypes = {
   CADtoMXN: "CADtoMXN",
   MXNtoCAD: "MXNtoCAD",
@@ -10,14 +14,11 @@ export const currencyTypes = {
   USD: "USD",
 };
 export function currencyConvert(type, amount) {
-  console.log(" currencyConvert", type);
   switch (type) {
     case convertionTypes.CADtoMXN: {
-      console.log(" CADtoMXN", amount * 10);
       return amount * 10;
     }
     case convertionTypes.MXNtoCAD: {
-      console.log(" CADtoMXN", amount / 10);
       return amount / 10;
     }
     case convertionTypes.CADtoUSD: {

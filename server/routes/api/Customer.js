@@ -1,14 +1,22 @@
+/**
+ * @author Shri Nandhini J R
+ * @email shrinandhini2801@gmail.com
+ */
 const express = require("express");
 const router = express.Router();
-
-// Load Customer model
-const Customer = require("../../dbmodels/Customer");
 const { Mongoose } = require("mongoose");
 
-// @route GET api/test
-// @description tests books route
-// @access Public
-router.get("/test", (req, res) => res.send("book route testing!"));
+/**
+ * Loading Customer model
+ */
+const Customer = require("../../dbmodels/Customer");
+
+/**
+ * @route - GET - api/test
+ * @description - To test if Api works fine.
+ *
+ */
+router.get("/test", (req, res) => res.send("Test API works !"));
 
 /**
  * @route - GET - api/
@@ -35,7 +43,7 @@ router.get("/:customerid", (req, res) => {
 
 /**
  * @route - GET - api/account/:accountno
- * @description - Get customer by customerid
+ * @description - Get customer by account number
  *
  */
 router.get("/account/:accountno", (req, res) => {
@@ -44,8 +52,13 @@ router.get("/account/:accountno", (req, res) => {
     .catch((err) => res.status(404).json({ nodatafound: "No data found" }));
 });
 
+/**
+ * @route - POST - api/update/:accountno
+ * @description - Update customer data using account number
+ *
+ */
+
 router.post("/update/:accountno", (req, res) => {
-  console.log("req body", req);
   Customer.findOneAndUpdate(
     { account_number: req.params.accountno },
     { $inc: { account_balance: req.body.account_balance } },

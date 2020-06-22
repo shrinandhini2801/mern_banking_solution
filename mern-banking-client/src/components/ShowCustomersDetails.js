@@ -1,9 +1,17 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import "../App.css";
+/**
+ * @author Shri Nandhini J R
+ * @email shrinandhini2801@gmail.com
+ */
 import axios from "axios";
+import React, { Component } from "react";
 import apiConfig from "../apiConfig.json";
 
+/**
+ *
+ * This component displays the updated details of all accounts from MongoDb
+ * @class ShowCustomerDetails
+ * @extends {Component}
+ */
 class ShowCustomerDetails extends Component {
   constructor(props) {
     super(props);
@@ -16,7 +24,6 @@ class ShowCustomerDetails extends Component {
     axios
       .get(apiConfig.ENDPOINT + "/")
       .then((res) => {
-        console.log("showCustomerDetails-API-response: ", res.data);
         this.setState({
           customers: res.data,
         });

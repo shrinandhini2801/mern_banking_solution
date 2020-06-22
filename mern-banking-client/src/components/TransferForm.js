@@ -1,23 +1,23 @@
+/**
+ * @author Shri Nandhini J R
+ * @email shrinandhini2801@gmail.com
+ */
 import {
+  Button,
   FormControl,
   InputLabel,
-  Select,
-  MenuItem,
   makeStyles,
+  MenuItem,
   Paper,
-  Typography,
+  Select,
   TextField,
-  Button,
+  Typography,
 } from "@material-ui/core";
 import axios from "axios";
 import React, { useState } from "react";
-import {
-  convertionTypes,
-  currencyConvert,
-  currencyTypes,
-} from "./utils/CurrencyConversion";
 import apiConfig from "../apiConfig.json";
-import Customers from "../Customers.json";
+import { performTransfer } from "./Functions";
+import { currencyTypes } from "./utils/CurrencyConversion";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -31,13 +31,12 @@ const useStyles = makeStyles((theme) => ({
 
 /**
  *
- *
+ * Transfer form component
  * @export
  * @param {*} props
  * @returns
  */
 export default function TransferForm(props) {
-  console.log("props", props);
   const classes = useStyles();
   const [fromAccount, setfromAccount] = useState(null);
   const [toAccount, setToAccount] = useState(null);
@@ -58,109 +57,20 @@ export default function TransferForm(props) {
     axios
       .get(apiConfig.ENDPOINT + "/account/" + toAccount)
       .then((res) => {
-        console.log("res", res);
-        if (res) {
-          performTransfer(fromAccount, toAccount, amount, currency, res.data);
+        if (res && res.status === 200) {
+          performTransfer(
+            fromAccount,
+            toAccount,
+            amount,
+            currency,
+            props.onSuccess
+          );
         } else {
           alert("Invalid Account number . Please try again.");
         }
       })
       .catch((err) => {
         console.log("Error while validating data");
-      });
-  };
-  /**
-   *
-   * @param {*} fromAccount
-   * @param {*} toAccount
-   * @param {*} amount
-   * @param {*} currency
-   * @param {*} receiverAccountDetails
-   */
-  const performTransfer = (
-    fromAccount,
-    toAccount,
-    amount,
-    currency,
-    receiverAccountDetails
-  ) => {
-    /** Fetching Available balance from the selected account */
-    // let senderAccBalance = props.userAcounts.find(
-    //   (element) => element.account_number === fromAccount
-    // ).account_balance.$numberDecimal;
-    // let receiverAccBalance = receiverAccountDetails
-    //   ? receiverAccountDetails[0].account_balance.$numberDecimal
-    //   : 0;
-
-    /** Convert currency to CAD before doing the transaction */
-    let CADAmount = amount;
-    console.log("CAD amount", CADAmount);
-    if (currency !== currencyTypes.CAD) {
-      CADAmount = currencyConvert(
-        currency === currencyTypes.MXN
-          ? convertionTypes.MXNtoCAD
-          : currency === currencyTypes.USD
-          ? convertionTypes.USDtoCAD
-          : null,
-        CADAmount
-      );
-    }
-    // console.log("senderAccBalance balance", senderAccBalance);
-    // console.log("receiverAccBalance balance", receiverAccBalance);
-
-    // senderAccBalance = deductSenderBalance(senderAccBalance, CADAmount);
-    // receiverAccBalance = addReceiverBalance(receiverAccBalance, CADAmount);
-
-    axios
-      .get(apiConfig.ENDPOINT + "/account/" + fromAccount)
-      .then((res) => {
-        console.log("res", res);
-        if (res && res.status === 200) {
-          console.log("res =====", res);
-          let avaialableBalance = res.data[0].account_balance.$numberDecimal;
-          if (
-            avaialableBalance &&
-            Number(avaialableBalance) < Number(CADAmount)
-          ) {
-            alert("No sufficient Balance to do this Transfer!");
-          } else {
-            /**Api to update db */
-            axios
-              .post(apiConfig.ENDPOINT + "/update/" + fromAccount, {
-                account_balance: -Number(CADAmount),
-              })
-              .then((res) => {
-                console.log("res", res);
-                if (res && res.status === 200) {
-                  axios
-                    .post(apiConfig.ENDPOINT + "/update/" + toAccount, {
-                      account_balance: Number(CADAmount),
-                    })
-                    .then((res) => {
-                      console.log("res", res);
-                      if (res && res.status === 200) {
-                        props.onSuccess();
-                      } else {
-                        alert("Some error occured !");
-                      }
-                    })
-                    .catch((err) => {
-                      console.log("Error while fetching data", err);
-                    });
-                } else {
-                  alert("Enter valid Details! ");
-                }
-              })
-              .catch((err) => {
-                console.log("Error while fetching data", err);
-              });
-          }
-        } else {
-          alert("Enter valid Details! ");
-        }
-      })
-      .catch((err) => {
-        console.log("Error while fetching data");
       });
   };
 

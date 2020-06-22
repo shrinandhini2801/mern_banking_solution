@@ -1,3 +1,7 @@
+/**
+ * @author Shri Nandhini J R
+ * @email shrinandhini2801@gmail.com
+ */
 const mongoose = require("mongoose");
 
 const CustomerSchema = new mongoose.Schema({
