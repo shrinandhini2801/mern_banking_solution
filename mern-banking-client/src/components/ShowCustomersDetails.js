@@ -2,6 +2,16 @@
  * @author Shri Nandhini J R
  * @email shrinandhini2801@gmail.com
  */
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@material-ui/core";
 import axios from "axios";
 import React, { Component } from "react";
 import apiConfig from "../apiConfig.json";
@@ -35,44 +45,46 @@ class ShowCustomerDetails extends Component {
 
   render() {
     const { customers } = this.state;
-    let tableBody = customers && (
-      <tbody>
-        {customers.map((item, index) => (
-          <tr>
-            <th scope="row">1</th>
-            <td>{item.customer_id}</td>
-            <td>{item.customer_name}</td>
-            <td>{item.account_number}</td>
-            <td>{item.account_balance.$numberDecimal}</td>
-          </tr>
-        ))}
-      </tbody>
-    );
-    let CustomerRow = (
-      <div>
-        <table className="table table-hover table-dark">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Customer Id</th>
-              <th scope="col">Customer Name</th>
-              <th scope="col">Account Number</th>
-              <th scope="col">Balance</th>
-            </tr>
-          </thead>
-          {tableBody}
-        </table>
-      </div>
-    );
-
     return (
-      <div className="ShowBookDetails">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-10 m-auto">{CustomerRow}</div>
-          </div>
-        </div>
-      </div>
+      <>
+        <Typography
+          variant="h6"
+          style={{ textAlign: "center", marginTop: "5%" }}
+        >
+          Updated Customer Database
+        </Typography>
+        <TableContainer component={Paper}>
+          <Table aria-label="simple table">
+            <TableHead style={{ backgroundColor: "#eaeaea" }}>
+              <TableRow>
+                <TableCell>#</TableCell>
+                <TableCell>Customer Id</TableCell>
+                <TableCell>Customer Name</TableCell>
+                <TableCell>Account Number</TableCell>
+                <TableCell>Account Type</TableCell>
+                <TableCell align="right">Account Balance</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody style={{ backgroundColor: "#f0f8ff" }}>
+              {customers &&
+                customers.map((row, index) => (
+                  <TableRow key={row.customer_id + "-" + index}>
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell component="th" scope="row">
+                      {row.customer_id}
+                    </TableCell>
+                    <TableCell>{row.customer_name}</TableCell>
+                    <TableCell>{row.account_number}</TableCell>
+                    <TableCell>{row.account_type}</TableCell>
+                    <TableCell align="right">
+                      {row.account_balance.$numberDecimal}
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </>
     );
   }
 }

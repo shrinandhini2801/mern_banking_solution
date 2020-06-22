@@ -3,12 +3,13 @@
  * @email shrinandhini2801@gmail.com
  */
 import {
+  Box,
   Button,
+  Card,
   FormControl,
   InputLabel,
   makeStyles,
   MenuItem,
-  Paper,
   Select,
   TextField,
   Typography,
@@ -19,8 +20,8 @@ import { currencyTypes } from "./utils/CurrencyConversion";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
+    margin: theme.spacing(3),
+    minWidth: 250,
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
@@ -52,67 +53,63 @@ export default function DepositForm(props) {
   };
 
   return (
-    <Paper elevation={3} style={{ marginTop: "10%", justifyContent: "center" }}>
+    <Card elevation={3} style={{ marginTop: "10%", padding: 20 }}>
       <Typography variant="h6" style={{ textAlign: "center" }}>
         Deposit Form
       </Typography>
-      {/* <FormControl className={classes.formControl}>
-        <InputLabel id="demo-simple-select-label">From Acc</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={fromAccount}
-          onChange={(event) => setfromAccount(event.target.value)}
-        >
-          {props.userAcounts.map((row, index) => (
-            <MenuItem value={row.account_number}>{row.account_number}</MenuItem>
-          ))}
-        </Select>
-      </FormControl> */}
-      <FormControl className={classes.formControl}>
-        <InputLabel id="demo-simple-select-label">To Acc</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={toAccount}
-          onChange={(event) => setToAccount(event.target.value)}
-        >
-          {props.userAcounts.map((row, index) => (
-            <MenuItem value={row.account_number}>{row.account_number}</MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      <FormControl className={classes.formControl}>
-        <InputLabel id="demo-simple-select-label">Currency</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={currency}
-          onChange={(event) => setCurrency(event.target.value)}
-        >
-          <MenuItem value={currencyTypes.CAD}>{currencyTypes.CAD}</MenuItem>
-          <MenuItem value={currencyTypes.USD}>{currencyTypes.USD}</MenuItem>
-          <MenuItem value={currencyTypes.MXN}>{currencyTypes.MXN}</MenuItem>
-        </Select>
-      </FormControl>
-      <FormControl className={classes.formControl}>
-        <TextField
-          id="outlined-basic"
-          label="Enter the Amount"
-          variant="outlined"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-        />
-      </FormControl>
-
-      <Button
-        variant="contained"
-        color="primary"
-        style={{ marginHorizontal: 20, marginTop: 20 }}
-        onClick={(e) => onDepositClick(toAccount, amount, currency)}
+      <Box
+        component="div"
+        display="inline"
+        justifyContent="center"
+        width="100%"
       >
-        {"Deposit"}
-      </Button>
-    </Paper>
+        <FormControl className={classes.formControl}>
+          <InputLabel id="demo-simple-select-label">To Acc</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={toAccount}
+            onChange={(event) => setToAccount(event.target.value)}
+          >
+            {props.userAcounts.map((row, index) => (
+              <MenuItem value={row.account_number}>
+                {row.account_number}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl className={classes.formControl}>
+          <InputLabel id="demo-simple-select-label">Currency</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={currency}
+            onChange={(event) => setCurrency(event.target.value)}
+          >
+            <MenuItem value={currencyTypes.CAD}>{currencyTypes.CAD}</MenuItem>
+            <MenuItem value={currencyTypes.USD}>{currencyTypes.USD}</MenuItem>
+            <MenuItem value={currencyTypes.MXN}>{currencyTypes.MXN}</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl className={classes.formControl}>
+          <TextField
+            id="outlined-basic"
+            label="Enter the Amount"
+            variant="outlined"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+          />
+        </FormControl>
+
+        <Button
+          variant="contained"
+          color="primary"
+          style={{ marginHorizontal: 20, marginTop: 20 }}
+          onClick={(e) => onDepositClick(toAccount, amount, currency)}
+        >
+          {"Deposit"}
+        </Button>
+      </Box>
+    </Card>
   );
 }

@@ -4,6 +4,7 @@
  */
 import {
   AppBar,
+  Box,
   Button,
   Paper,
   Table,
@@ -13,8 +14,8 @@ import {
   TableHead,
   TableRow,
   TextField,
-  Typography,
   Toolbar,
+  Typography,
 } from "@material-ui/core";
 import React, { Component } from "react";
 import DepositForm from "./DepositForm";
@@ -63,14 +64,22 @@ export default class HomePage extends Component {
 
   onLoginClick = (e) => {
     e.preventDefault();
-    const { loggedInUsercustomerId } = this.state;
+    const { loggedInUsercustomerId, loggedInUserpassword } = this.state;
     const onSuccess = (res) => {
       this.setState({
         loggedInUseraccountData: res.data,
         loggedIn: true,
       });
     };
-    loggedInUsercustomerId && onLogin(loggedInUsercustomerId, onSuccess);
+    if (loggedInUsercustomerId) {
+      loggedInUserpassword && loggedInUserpassword === "123"
+        ? onLogin(loggedInUsercustomerId, onSuccess)
+        : loggedInUserpassword !== "123" || loggedInUserpassword === ""
+        ? alert("Enter Correct Password!")
+        : alert("Password cannot be empty.");
+    } else {
+      alert("Enter Valid Customer Id!");
+    }
   };
 
   loginForm = () => {
@@ -133,7 +142,10 @@ export default class HomePage extends Component {
     const { loggedInUseraccountData } = this.state;
     return loggedInUseraccountData ? (
       <>
-        <Typography variant="h6" style={{ textAlign: "center" }}>
+        <Typography
+          variant="h6"
+          style={{ textAlign: "center", marginTop: "10%" }}
+        >
           Your Account Details
         </Typography>
         <TableContainer component={Paper}>
@@ -169,7 +181,13 @@ export default class HomePage extends Component {
     const buttonProps = {
       variant: "contained",
       color: "primary",
-      style: { margin: 20 },
+      style: {
+        margin: 10,
+        marginTop: "5%",
+        paddingLeft: 40,
+        paddingRight: 40,
+        width: "30%",
+      },
     };
     const {
       showDeposit,
@@ -180,7 +198,7 @@ export default class HomePage extends Component {
     } = this.state;
     return (
       <>
-        <AppBar position="relative" style={{ padding: 20, flex: 1 }}>
+        <AppBar position="relative" style={{ padding: 10, flex: 1 }}>
           <Toolbar style={{ justifyContent: "space-between" }}>
             <Typography variant="h6" style={{ textAlign: "center", flex: 1 }}>
               Banking Solution using MERN stack
@@ -197,33 +215,44 @@ export default class HomePage extends Component {
             )}
           </Toolbar>
         </AppBar>
-        <div className="col-md-8 m-auto">
+        <div className="col-md-8 m-auto ">
           {!loggedIn && this.loginForm()}
           {loggedIn && (
-            <>
-              <Button
-                id={"depositButton"}
-                {...buttonProps}
-                onClick={() => this.showOrHideForms("showDeposit")}
+            <Box justify={"center"}>
+              <Box
+                component="div"
+                display="block"
+                justifyContent="center"
+                width="100%"
               >
-                {"Deposit"}
-              </Button>
-              <Button
-                id={"withdrawButton"}
-                {...buttonProps}
-                onClick={() => this.showOrHideForms("showWithdraw")}
-              >
-                {"Withdraw"}
-              </Button>
-              <Button
-                id={"transferButton"}
-                {...buttonProps}
-                onClick={() => this.showOrHideForms("showTransfer")}
-              >
-                {"Transfer"}
-              </Button>
+                <Button
+                  outlinedSizeSmall
+                  id={"depositButton"}
+                  {...buttonProps}
+                  onClick={() => this.showOrHideForms("showDeposit")}
+                >
+                  {"Deposit"}
+                </Button>
+                <Button
+                  outlinedSizeSmall
+                  id={"withdrawButton"}
+                  {...buttonProps}
+                  onClick={() => this.showOrHideForms("showWithdraw")}
+                >
+                  {"Withdraw"}
+                </Button>
+                <Button
+                  outlinedSizeSmall
+                  id={"transferButton"}
+                  {...buttonProps}
+                  onClick={() => this.showOrHideForms("showTransfer")}
+                >
+                  {"Transfer"}
+                </Button>
+              </Box>
+
               {!transactionSuccess && this.displayUserData()}
-            </>
+            </Box>
           )}
           {showDeposit && (
             <DepositForm
