@@ -35,6 +35,7 @@ const userState = {
   loggedIn: false,
   loggedInUsercustomerId: null,
   loggedInUserpassword: null,
+  showPassword: false,
   loggedInUseraccountData: {},
 };
 /**
@@ -103,6 +104,7 @@ export default class HomePage extends Component {
         >
           <div>
             <TextField
+              required
               id="outlined-basic"
               label="customer id"
               variant="outlined"
@@ -110,13 +112,15 @@ export default class HomePage extends Component {
               onChange={(e) =>
                 this.setState({ loggedInUsercustomerId: e.target.value })
               }
-              style={{ margin: 20 }}
+              style={{ marginTop: 20, marginBottom: 20 }}
             />
           </div>
-          <div>
+          <div style={{ marginTop: 20, marginBottom: 20 }}>
             <TextField
+              required
               id="outlined-basic"
-              label="password(enter 123)"
+              label="Password"
+              type={"password"}
               variant="outlined"
               value={this.state.loggedInUserpassword}
               onChange={(e) =>
