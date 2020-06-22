@@ -35,3 +35,32 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 The build is minified and the filenames include the hashes.<br />
 The app is ready to be deployed!
+
+### UI Screenshots
+
+<div style="display: flex;">
+  <div>
+    Login <br/>
+    <img  src="./screenshots/login.png?sanitize=true" >
+  </div>
+    <div>
+    Home <br/>
+    <img  src="./screenshots/home.png?sanitize=true" >
+  </div>
+    <div>
+    Deposit <br/>
+    <img  src="./screenshots/deposit.png?sanitize=true" >
+  </div>
+    <div>
+    Withdrawal <br/>
+    <img  src="./screenshots/withdrawal.png?sanitize=true" >
+  </div>
+    <div>
+    Account Transfer <br/>
+    <img  src="./screenshots/transfer.png?sanitize=true" >
+  </div>
+    <div>
+    Customer Table <br/>
+    <img  src="./screenshots/finaltable.png?sanitize=true" >
+  </div>
+</div>
