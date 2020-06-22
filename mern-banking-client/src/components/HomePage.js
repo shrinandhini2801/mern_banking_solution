@@ -14,6 +14,7 @@ import {
   TableRow,
   TextField,
   Typography,
+  Toolbar,
 } from "@material-ui/core";
 import React, { Component } from "react";
 import DepositForm from "./DepositForm";
@@ -28,6 +29,13 @@ const initialState = {
   showTransfer: false,
   transactionSuccess: false,
 };
+
+const userState = {
+  loggedIn: false,
+  loggedInUsercustomerId: null,
+  loggedInUserpassword: null,
+  loggedInUseraccountData: {},
+};
 /**
  *
  * Main Home page that includes all necessary components
@@ -40,16 +48,17 @@ export default class HomePage extends Component {
     super();
     this.state = {
       ...initialState,
-      loggedIn: false,
-      loggedInUsercustomerId: null,
-      loggedInUserpassword: null,
-      loggedInUseraccountData: {},
+      ...userState,
     };
   }
 
   showOrHideForms = (stateName) => {
     this.setState(initialState);
     this.setState({ [stateName]: true });
+  };
+
+  logOut = () => {
+    this.setState({ ...initialState, ...userState });
   };
 
   onLoginClick = (e) => {
@@ -66,49 +75,57 @@ export default class HomePage extends Component {
 
   loginForm = () => {
     return (
-      <form
-        noValidate
-        autoComplete="off"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column",
-        }}
-      >
-        <div>
-          <TextField
-            id="outlined-basic"
-            label="customer id"
-            variant="outlined"
-            value={this.state.loggedInUsercustomerId}
-            onChange={(e) =>
-              this.setState({ loggedInUsercustomerId: e.target.value })
-            }
-            style={{ margin: 20 }}
-          />
-        </div>
-        <div>
-          <TextField
-            id="outlined-basic"
-            label="password(enter 123)"
-            variant="outlined"
-            value={this.state.loggedInUserpassword}
-            onChange={(e) =>
-              this.setState({ loggedInUserpassword: e.target.value })
-            }
-            style={{ margin: 20 }}
-          />
-        </div>
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          onClick={(e) => this.onLoginClick(e)}
+      <>
+        <Typography
+          variant="h6"
+          style={{ textAlign: "center", marginTop: "10%" }}
         >
-          {"Login"}
-        </Button>
-      </form>
+          Login
+        </Typography>
+        <form
+          noValidate
+          autoComplete="off"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+          }}
+        >
+          <div>
+            <TextField
+              id="outlined-basic"
+              label="customer id"
+              variant="outlined"
+              value={this.state.loggedInUsercustomerId}
+              onChange={(e) =>
+                this.setState({ loggedInUsercustomerId: e.target.value })
+              }
+              style={{ margin: 20 }}
+            />
+          </div>
+          <div>
+            <TextField
+              id="outlined-basic"
+              label="password(enter 123)"
+              variant="outlined"
+              value={this.state.loggedInUserpassword}
+              onChange={(e) =>
+                this.setState({ loggedInUserpassword: e.target.value })
+              }
+              style={{ margin: 20 }}
+            />
+          </div>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            onClick={(e) => this.onLoginClick(e)}
+          >
+            {"Login"}
+          </Button>
+        </form>
+      </>
     );
   };
 
@@ -163,10 +180,22 @@ export default class HomePage extends Component {
     } = this.state;
     return (
       <>
-        <AppBar position="relative" style={{ padding: 20 }}>
-          <Typography variant="h6" style={{ textAlign: "center" }}>
-            Banking Solution using MERN stack
-          </Typography>
+        <AppBar position="relative" style={{ padding: 20, flex: 1 }}>
+          <Toolbar style={{ justifyContent: "space-between" }}>
+            <Typography variant="h6" style={{ textAlign: "center", flex: 1 }}>
+              Banking Solution using MERN stack
+            </Typography>
+            {loggedIn && (
+              <Button
+                color="inherit"
+                onClick={() => {
+                  this.logOut();
+                }}
+              >
+                {"Logout"}
+              </Button>
+            )}
+          </Toolbar>
         </AppBar>
         <div className="col-md-8 m-auto">
           {!loggedIn && this.loginForm()}
