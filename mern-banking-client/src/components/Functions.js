@@ -72,7 +72,7 @@ export const onDeposit = (toAccount, amount, currency, onSuccess) => {
     });
 };
 
-export /**
+/**
  *
  * @param {*} fromAccount - Account number of the sender
  * @param {*} toAccount - Account number of the receiver
@@ -80,7 +80,7 @@ export /**
  * @param {*} currency - currency type (CAD / MXN / USD)
  * @param {*} onSuccess - Success call back once the transfer is success
  */
-const performTransfer = (
+export const performTransfer = (
   fromAccount,
   toAccount,
   amount,
